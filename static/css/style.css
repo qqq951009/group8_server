@@ -1,0 +1,107 @@
+/*=============================================
+=                  General                    =
+=============================================*/
+
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+button:focus {
+    outline: none;
+}
+
+#goBackBtn{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    /* 定位到畫面右下角 */
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+
+}
+
+/*=============================================
+=                  Navbar                     =
+=============================================*/
+
+.navbar {
+    box-shadow: 0 3px 18px rgba(0, 0, 0, .11);
+}
+
+/*=============================================
+=                  Header                     =
+=============================================*/
+
+#header {
+    padding: 250px 0;
+    background-image: url('../img/headerImage.png');
+    background-size: cover;
+    /* 固定背景 */
+    background-attachment: fixed;
+}
+
+/* 
+.btn-primary {
+    background-color: purple;
+} */
+
+/*=============================================
+=                  Intro                      =
+=============================================*/
+
+/*=============================================
+=                  Features                   =
+=============================================*/
+
+/*=============================================
+=                  Reviews                    =
+=============================================*/
+
+
+/* 放入背景圖片 */
+
+#galleryImage1 {
+    background-image: url('../img/galleryImage1.jpg');
+}
+
+
+/*=============================================
+=                  Start Now                  =
+=============================================*/
+
+/*=============================================
+=                   Footer                    =
+=============================================*/
+
+#map {
+    width: 100%;
+    height: 400px;
+    background: #aaa;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-end p {
+    font-size: 8px;
+    margin: 0;
+}
+
+#step_table img{
+    height: 50px;
+    width: 50px;
+}
