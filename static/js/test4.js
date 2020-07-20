@@ -673,7 +673,7 @@ const getVectorLenth = (v1, v2) => {
     link.click();
     // sessionStorage.setItem('test_tst_111',
     //     JSON.stringify(canvas.save()));
-    alert("?");
+    //alert("?");
   });
 
   const dataCa = sessionStorage.getItem('test_tst_111');
