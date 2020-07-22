@@ -350,10 +350,13 @@ const getVectorLenth = (v1, v2) => {
       var x = this.canvas.width*0.1/2;
       var y = this.canvas.height*0.1/2;
      
-      var colume = Math.ceil(icon_num % 3);
-      var row = Math.ceil(icon_num / 3);
-      
-      this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [x,y], 0);
+      var column = parseInt(icon_num % 3);
+      var row = parseInt(icon_num / 3);
+
+      if(icon_num>=0){
+        this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [x+100*column,y], 0);
+        icon_num=icon_num-1
+      }
       
       //this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [this.canvas.width*0.1 / 2, this.canvas.height*0.1 / 2], 0);
     }
@@ -426,12 +429,12 @@ const getVectorLenth = (v1, v2) => {
       this.canvas.width = width;
       this.canvas.height = height;
       this.context = this.canvas.getContext('2d'); // 画布对象
-  
       this.loaded = 0;
       this.border = new Border(this);
       this.current = null;
       this.init();
       this.initEvent();
+
     }
   
     init() {
@@ -478,7 +481,8 @@ const getVectorLenth = (v1, v2) => {
   
             if (status === 1) {
               this.current.rect.translate(vector);
-            } else if (status === 'r_point') {
+            } 
+            else if (status === 'r_point') {
               const e_point = [(m_x - position.x) * scale, (m_y - position.y) * scale];
               const angle = Canvas.getAngle(this.current.rect.center, this.border.r_point, e_point);
   
@@ -487,7 +491,8 @@ const getVectorLenth = (v1, v2) => {
               } else {
                 return;
               }
-            } else {
+            } 
+            else {
               this.current.rect.zoom(status, vector);
             }
   
@@ -500,6 +505,9 @@ const getVectorLenth = (v1, v2) => {
           this.target.addEventListener('mouseup', () => {
             this.target.removeEventListener('mousemove', move);
           });
+        }
+        else{
+          this.draw();
         }
       });
       this.list.addEventListener('click', e => {
@@ -558,6 +566,7 @@ const getVectorLenth = (v1, v2) => {
   
   
     addPhoto(image) {
+    
       if (typeof image === 'string') {
         this.loaded += 1;
         const lyr = new Photo(image, this, () => {
@@ -586,12 +595,14 @@ const getVectorLenth = (v1, v2) => {
   
       if (typeof image === 'string') {
         img = new Image();
+        img.height=100
+        img.width=100
         img.src = image;
       }
   
       img.setAttribute('data-id', id);
       item.appendChild(img);
-      this.list.appendChild(item);
+      this.list.prepend(item);
     }
   
     selectPhoto(point) {
@@ -661,6 +672,7 @@ const getVectorLenth = (v1, v2) => {
       if (this.current) {
         this.border.refresh(this.current.rect);
       }
+      
     }
   
   }
@@ -668,6 +680,12 @@ const getVectorLenth = (v1, v2) => {
   document.getElementById('save').addEventListener('click', () => {
     var link = document.getElementById('download');
     var rrrr = document.getElementById('test')
+    var ctx=rrrr.getContext('2d')
+    
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, rrrr.width, rrrr.height);
+
     link.download = "image.jpg";
     link.href = rrrr.toDataURL("image/jpeg");
     link.click();
