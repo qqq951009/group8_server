@@ -354,7 +354,7 @@ const getVectorLenth = (v1, v2) => {
       var row = parseInt(icon_num / 3);
 
       if(icon_num>=0){
-        this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [x+100*column,y], 0);
+        this.rect = new Rect(this.image.width, this.image.height, [x+100*column,y], 0);
         icon_num=icon_num-1
       }
       
