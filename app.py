@@ -14,6 +14,10 @@ def index():
 def output1():
    return render_template('output.html')
 
+@app.route('/services')
+def services():
+   return render_template('services.html')
+
 @app.route('/test')
 def output2():
    return render_template('test4.html')
