@@ -84,7 +84,7 @@ Author URL: http://w3layouts.com
                                 <input type="checkbox" id="drop-2" />
                                 <ul>
 
-                                    <li><a href="services.html" class="drop-text">Services</a></li>
+                                    <li><a href="services" class="drop-text">Services</a></li>
                                     <li class="active"><a href="timeline.html" class="drop-text">Timeline</a></li>
                                     <li><a href="team.html" class="drop-text">Team</a></li>
                                     <li><a href="typo.html" class="drop-text">Typography</a></li>
@@ -130,8 +130,8 @@ Author URL: http://w3layouts.com
         <div class="container p-md-5">
             <div class="about-hny-info text-left px-md-5">
                 <div class="error-w3pvt px-md-5 text-center">
-                    <h4>圖片在這</h4>
-                    <div class="border2"><canvas height="900" width="820" id="test"></canvas></div>
+                    <!-- <h4>圖片在這</h4> -->
+                    <canvas height="900" width="820" style="border: 3px solid saddlebrown;" id="test"></canvas>
                     <div id="list"></div>
                     <button id="save" class="btn more black error mt-4">保存</button>
                     <a id="download"></a>
@@ -246,7 +246,7 @@ Author URL: http://w3layouts.com
 
     </div>
     <!-- //copyright -->
-    <script src="../static/js/test4.js"></script>
+    <script src="../static/js/canvas.js"></script>
     <script>
         $(function() {
             
@@ -258,13 +258,20 @@ Author URL: http://w3layouts.com
             success: function(response) {
                 //window.location.href = response.url
                 table_str=""
-                for (step=0;step<response.length;step++)
+                title = response[2]
+                text_list=response[1]
+                icon_list=response[0]
+                //alert(text_list+" "+title);
+                
+                for (step=0;step<icon_list.length;step++)
                 {
-                    response[step] = response[step].reverse();
+                    icon_list[step] = icon_list[step].reverse();
+                    addtext(title,step,text_list[step]);
+                    //alert(title+" + "+step+" + "+text_list[step])
                     //image_str='<tr><th>STEP'+(step+1)+'</th>'
-                    for(image=0;image<response[step].length;image++)
+                    for(image=0;image<icon_list[step].length;image++)
                     {
-                        addicon(response[step][image],image);
+                        addicon(image,icon_list[step][image]);
                         //image_str+='<td><img src="'+response[step][image]+'"></img></td>';
                     }
                     //image_str+='</tr>'

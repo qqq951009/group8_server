@@ -1,6 +1,12 @@
 var iconimg;
 var count;
 var icon_num;
+//文字
+var steptext = new Array();
+var stepcount
+var titletext;
+//var steptext = ['步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟，一步驟一步驟一步驟一。','步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟，二步驟二步驟二步驟二。','步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟，三步驟三步驟三步驟三。','步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟，四步驟四步驟四步驟四。','步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟，五步驟五步驟五步驟五。'];
+
 const getVectorLenth = (v1, v2) => {
     const [x1, y1] = v1;
     const [x2, y2] = v2;
@@ -350,11 +356,12 @@ const getVectorLenth = (v1, v2) => {
       var x = this.canvas.width*0.1/2;
       var y = this.canvas.height*0.1/2;
      
+
       var column = parseInt(icon_num % 3);
       var row = parseInt(icon_num / 3);
-
+        
       if(icon_num>=0){
-        this.rect = new Rect(this.image.width, this.image.height, [x+100*column,y], 0);
+        this.rect = new Rect(this.image.width, this.image.height, [x+100*column,y+145+100*row], 0);
         icon_num=icon_num-1
       }
       
@@ -662,6 +669,18 @@ const getVectorLenth = (v1, v2) => {
     draw() {
       this.clear();
       this.layers.forEach(item => {
+        //文字
+        this.context.font="60px Georgia";
+        this.context.textAlign = "center";
+        this.context.fillText(titletext,450,55);
+        //alert(stepcount);
+        var i;
+        for(i = 0;i <= stepcount;i++) {
+          this.context.font="20px Georgia";
+          this.context.textAlign ="left";
+          //alert(i+" "+steptext[i]);
+          this.context.wrapText(steptext[i],0+(i%3)*300,83+Math.floor(i/3)*300,299,20);
+        }
         if (typeof item === 'function') {
           item.apply(null, this.context, this.canvas);
         } else {
@@ -676,6 +695,40 @@ const getVectorLenth = (v1, v2) => {
     }
   
   }
+  //文字換行方法
+  CanvasRenderingContext2D.prototype.wrapText = function (text, x, y, maxWidth, lineHeight) {
+    if (typeof text != 'string' || typeof x != 'number' || typeof y != 'number') {
+        return;
+    }
+    
+    var context = this;
+    var canvas = context.canvas;
+    
+    if (typeof maxWidth == 'undefined') {
+        maxWidth = (canvas && canvas.width) || 300;
+    }
+    if (typeof lineHeight == 'undefined') {
+        lineHeight = (canvas && parseInt(window.getComputedStyle(canvas).lineHeight)) || parseInt(window.getComputedStyle(document.body).lineHeight);
+    }
+    
+    // 字符分隔为数组
+    var arrText = text.split('');
+    var line = '';
+    
+    for (var n = 0; n < arrText.length; n++) {
+        var testLine = line + arrText[n];
+        var metrics = context.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+            context.fillText(line, x, y);
+            line = arrText[n];
+            y += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+    context.fillText(line, x, y);
+  };
 
   document.getElementById('save').addEventListener('click', () => {
     var link = document.getElementById('download');
@@ -699,29 +752,19 @@ const getVectorLenth = (v1, v2) => {
     canvas: 'test',
     target: 'test',
     list: 'list',
-    height: 960,
-    width: 1250,
+    height: 820,
+    width: 900,
     data: dataCa ? JSON.parse(dataCa) : []
   });
 
-//   // 使用canvas的toBlob方法將其轉為blob
-//   const blob = this.canvas.toBlob(blob => {
-//   // 有了blob我們就可以使三 URL.createObjectURL建立url
-//   const url = URL.createObjectURL(blob)
-//   const link = document.createElement('a')
-//   link.innerText = 'Download'
-//   link.href = url // 將url 設定給 a tage 的 href
-//   link.download = 'circle.png'    // 設定 download name
-//   document.body.appendChild(link) // 加到指定元素之中，即可點擊下載
-// })
+  function addtext(ti,sc,t){
+    titletext = ti;
+    stepcount = sc;
+    steptext[sc] = t;
+    //alert("sc"+steptext[sc]);
+  }
 
-  //document.addEventListener(); 
-  //canvas.addPhoto('static/img/table 1.table1600.png');
-  //canvas.addPhoto('static/img/water 1.water1600.png');
-
-  function addicon(iconimg,count){
-    //alert(iconimg);
+  function addicon(iconcount,iconimg){
     canvas.addPhoto(iconimg);
-    icon_num = count;
-    //alert("count"+count);
+    icon_num = iconcount;
   }
