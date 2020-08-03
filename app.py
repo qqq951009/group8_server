@@ -36,7 +36,12 @@ def methodget():
         for i in range(int(data['num'])):
             steps.append(data['step'+str(i+1)])
         global path_list
-        path_list = all_panel.stepictures(steps)
+        path_list=[]
+        pic_url = all_panel.stepictures(steps)
+        title = data['title']
+        path_list.append(pic_url)
+        path_list.append(steps)
+        path_list.append(title)
 
         return json.dumps({'status':'OK'})
 
