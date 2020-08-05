@@ -1,10 +1,14 @@
 var iconimg;
 var count;
 var icon_num;
+var iconlist = new Array(6);
+var index_iconlist = 0;
 //文字
 var steptext = new Array();
 var stepcount
+var stepcount_img=0;
 var titletext;
+var step_array;
 //var steptext = ['步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟，一步驟一步驟一步驟一。','步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟，二步驟二步驟二步驟二。','步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟，三步驟三步驟三步驟三。','步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟，四步驟四步驟四步驟四。','步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟，五步驟五步驟五步驟五。'];
 
 const getVectorLenth = (v1, v2) => {
@@ -359,12 +363,27 @@ const getVectorLenth = (v1, v2) => {
 
       var column = parseInt(icon_num % 3);
       var row = parseInt(icon_num / 3);
-        
+
       if(icon_num>=0){
-        this.rect = new Rect(this.image.width, this.image.height, [x+100*column,y+145+100*row], 0);
-        icon_num=icon_num-1
+        //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row)
       }
-      
+      else
+      {
+        stepcount_img++;
+        icon_num=step_array[stepcount_img].length-1;
+        column = parseInt(icon_num % 3);
+        row = parseInt(icon_num / 3);
+       // alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row+"555")
+      }
+      if(stepcount_img<3){
+        this.rect = new Rect(this.image.width, this.image.height, [x+300*stepcount_img+100*column,y+145+100*row], 0);
+      }
+      else{
+        var stepcount_img_for_draw=parseInt(stepcount_img % 3);
+        this.rect = new Rect(this.image.width, this.image.height, [x+300*stepcount_img_for_draw+100*column,y+520+100*row], 0);
+        //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row+"555")
+      }
+      icon_num=icon_num-1;     
       //this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [this.canvas.width*0.1 / 2, this.canvas.height*0.1 / 2], 0);
     }
   
@@ -608,8 +627,8 @@ const getVectorLenth = (v1, v2) => {
       }
   
       img.setAttribute('data-id', id);
-      item.appendChild(img);
-      this.list.prepend(item);
+      //item.appendChild(img);
+      //this.list.prepend(item);
     }
   
     selectPhoto(point) {
@@ -670,16 +689,17 @@ const getVectorLenth = (v1, v2) => {
       this.clear();
       this.layers.forEach(item => {
         //文字
-        this.context.font="60px Georgia";
+        this.context.font="50px serif ";
+        this.context.fillStyle="black";
         this.context.textAlign = "center";
-        this.context.fillText(titletext,450,55);
+        this.context.fillText(titletext,450,45);
         //alert(stepcount);
         var i;
         for(i = 0;i <= stepcount;i++) {
-          this.context.font="20px Georgia";
+          this.context.font="20px 'Noto Sans TC'";
           this.context.textAlign ="left";
           //alert(i+" "+steptext[i]);
-          this.context.wrapText(steptext[i],0+(i%3)*300,83+Math.floor(i/3)*300,299,20);
+          this.context.wrapText(steptext[i],0+(i%3)*300,73+Math.floor(i/3)*375,299,20);
         }
         if (typeof item === 'function') {
           item.apply(null, this.context, this.canvas);
@@ -734,7 +754,7 @@ const getVectorLenth = (v1, v2) => {
     var link = document.getElementById('download');
     var rrrr = document.getElementById('test')
     var ctx=rrrr.getContext('2d')
-    
+
     ctx.globalCompositeOperation = 'destination-over';
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, rrrr.width, rrrr.height);
