@@ -4,9 +4,10 @@
 	License: Creative Commons Attribution 3.0 Unported
 	License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
-
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
 html,
 body {
+    font-family:'Noto Sans TC', sans-serif;
     margin: 0;
     font-size: 100%;
     background: #fff;
