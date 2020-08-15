@@ -1,15 +1,14 @@
 var iconimg;
-var count;
-var icon_num;
-var iconlist = new Array(6);
+var icon_num=-1;
+var iconlist = new Array();
 var index_iconlist = 0;
 //文字
 var steptext = new Array();
 var stepcount
-var stepcount_img=0;
 var titletext;
+//draw icon
+var stepcount_img=-1;
 var step_array;
-//var steptext = ['步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟一步驟，一步驟一步驟一步驟一。','步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟二步驟，二步驟二步驟二步驟二。','步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟三步驟，三步驟三步驟三步驟三。','步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟四步驟，四步驟四步驟四步驟四。','步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟五步驟，五步驟五步驟五步驟五。'];
 
 const getVectorLenth = (v1, v2) => {
     const [x1, y1] = v1;
@@ -325,13 +324,15 @@ const getVectorLenth = (v1, v2) => {
       if (typeof this.img !== 'string') {
         this.image = this.img;
         this.isLoad = true;
-        this.init();
+        //alert("if step"+stepcount_img+"_"+icon_num);
+        this.init()
       } else {
         this.image = new Image();
   
         this.image.onload = () => {
           if (this.isLoad) return;
           this.isLoad = true;
+          //alert("onload step"+stepcount_img+"_"+icon_num);
           this.init();
         };
         this.image.setAttribute('crossorigin','anonymous');
@@ -339,6 +340,7 @@ const getVectorLenth = (v1, v2) => {
         
         if (this.image.complete) {
           this.isLoad = true;
+          //alert("complete step"+stepcount_img+"_"+icon_num);
           this.init();
         }
       }
@@ -363,17 +365,13 @@ const getVectorLenth = (v1, v2) => {
 
       var column = parseInt(icon_num % 3);
       var row = parseInt(icon_num / 3);
-
-      if(icon_num>=0){
-        //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row)
-      }
-      else
-      {
+      
+      if(icon_num<0 & stepcount_img<step_array.length){
         stepcount_img++;
         icon_num=step_array[stepcount_img].length-1;
         column = parseInt(icon_num % 3);
         row = parseInt(icon_num / 3);
-       // alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row+"555")
+        //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row);
       }
       if(stepcount_img<3){
         this.rect = new Rect(this.image.width, this.image.height, [x+300*stepcount_img+100*column,y+145+100*row], 0);
@@ -383,7 +381,8 @@ const getVectorLenth = (v1, v2) => {
         this.rect = new Rect(this.image.width, this.image.height, [x+300*stepcount_img_for_draw+100*column,y+520+100*row], 0);
         //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row+"555")
       }
-      icon_num=icon_num-1;     
+      icon_num=icon_num-1;    
+      
       //this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [this.canvas.width*0.1 / 2, this.canvas.height*0.1 / 2], 0);
     }
   
@@ -402,7 +401,9 @@ const getVectorLenth = (v1, v2) => {
       context.translate(c_x, c_y);
       context.rotate(rect.angle);
       //context.scale(0.1,0.1);
+      console.log("pre image.src"+image.src);
       context.drawImage(image, 0, 0, image.width, image.height, points[0][0] - c_x, points[0][1] - c_y, rect.width, rect.height);
+      console.log("post image.src"+image.src);
       context.restore();
     }
   
@@ -687,20 +688,22 @@ const getVectorLenth = (v1, v2) => {
   
     draw() {
       this.clear();
+     
       this.layers.forEach(item => {
-        //文字
-        this.context.font="50px serif ";
-        this.context.fillStyle="black";
-        this.context.textAlign = "center";
-        this.context.fillText(titletext,450,45);
-        //alert(stepcount);
-        var i;
-        for(i = 0;i <= stepcount;i++) {
-          this.context.font="20px 'Noto Sans TC'";
-          this.context.textAlign ="left";
-          //alert(i+" "+steptext[i]);
-          this.context.wrapText(steptext[i],0+(i%3)*300,73+Math.floor(i/3)*375,299,20);
-        }
+         //文字
+         this.context.fillStyle="black";
+         this.context.font="50px serif ";
+         this.context.textAlign = "center";
+         this.context.fillText(titletext,450,45);
+         //alert(stepcount);
+         var i;
+         for(i = 0;i <= stepcount;i++) {
+           this.context.font="20px 'Noto Sans TC'";
+           this.context.textAlign ="left";
+           //alert(i+" "+steptext[i]);
+           this.context.wrapText(steptext[i],0+(i%3)*300,73+Math.floor(i/3)*375,299,20);
+         }
+
         if (typeof item === 'function') {
           item.apply(null, this.context, this.canvas);
         } else {
@@ -785,6 +788,10 @@ const getVectorLenth = (v1, v2) => {
   }
 
   function addicon(iconcount,iconimg){
+    //alert("pre：iconcount:"+iconcount+" iconimg:"+iconimg);
     canvas.addPhoto(iconimg);
-    icon_num = iconcount;
+
+    //icon_num = iconcount;
+    //alert("post：icon_num:"+icon_num+" iconimg:"+iconimg);
   }
+  
