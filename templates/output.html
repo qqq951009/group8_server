@@ -130,7 +130,7 @@ Author URL: http://w3layouts.com
         <div class="container p-md-5">
             <div class="about-hny-info text-left px-md-5">
                 <div class="error-w3pvt px-md-5 text-center">
-                    <div class="test">測試儀下</div>
+                    <!-- <div class="test">測試儀下</div> -->
                     <!-- <h4>圖片在這</h4> -->
                     <canvas height="900" width="820" style="border: 3px solid saddlebrown;" id="test"></canvas>
                     <div id="list"></div>
@@ -263,16 +263,19 @@ Author URL: http://w3layouts.com
                 title = response[2]
                 text_list=response[1]
                 icon_list=response[0]
-                //alert(text_list+" "+title);
+                
+
                 step_array=icon_list
                 for (step=0;step<icon_list.length;step++)
                 {
                     icon_list[step] = icon_list[step].reverse();
                     addtext(title,step,text_list[step]);
+                    //console.log(icon_list[step]);
                     //alert(title+" + "+step+" + "+text_list[step])
                     //image_str='<tr><th>STEP'+(step+1)+'</th>'
                     for(image=0;image<icon_list[step].length;image++)
                     {
+                        console.log(step+"_"+image+"："+icon_list[step][image]);
                         addicon(image,icon_list[step][image]);
                         //image_str+='<td><img src="'+response[step][image]+'"></img></td>';
                     }
