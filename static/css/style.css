@@ -1466,9 +1466,9 @@ h4.title-hny {
 @media (min-width: 1000px) {
     #timeline .demo-card-wrapper {
         display: flex;
-        flex-flow: column wrap;
+        flex-flow: row wrap;
         width: 1170px;
-        height: 1650px;
+        
         margin: 0 auto;
     }
 }
@@ -1620,6 +1620,12 @@ h4.title-hny {
 #timeline .demo-card .body img {
     display: block;
     width: 100%;
+}
+
+
+#timeline .demo-card .body a {
+    margin-top: 10px;
+    margin-left: 250px;
 }
 
 #timeline .demo-card--step1 {

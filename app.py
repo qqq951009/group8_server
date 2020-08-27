@@ -1,5 +1,5 @@
 import sys
-sys.path.append('C:/users/123122/Desktop/Stepictures')
+sys.path.append('C:/users/123122/Desktop/Stepictures/')
 from flask import Flask,render_template
 from flask import jsonify,abort,request,redirect,url_for
 import all_panel
@@ -18,16 +18,11 @@ def output1():
 def services():
    return render_template('services.html')
 
-@app.route('/test')
-def output2():
-   return render_template('test4.html')
-
-
 
 @app.route('/post_step',methods = ['GET','POST'])
 def methodget():
     steps = []
-    pic_url=[]
+    pic_url=[] 
     picname = 'static/img/logo.png' 
     if request.method == 'POST':
         data = json.loads(request.data)
@@ -50,7 +45,6 @@ def methodget():
         pic_url.append(picname)
         print(jsonify(pic_url))
         return jsonify(path_list)
-    
     
 
 
