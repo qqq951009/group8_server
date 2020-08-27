@@ -9,6 +9,11 @@ var titletext;
 //draw icon
 var stepcount_img=-1;
 var step_array;
+var imgbuffer = new Array();
+var idtest=0;
+var te=1;
+var imgn=0;
+
 
 const getVectorLenth = (v1, v2) => {
     const [x1, y1] = v1;
@@ -308,7 +313,7 @@ const getVectorLenth = (v1, v2) => {
       this.canvas = canvas;
       this.img = image;
       this.load = load;
-      this.id = new Date().getTime();
+      this.id = ++idtest;
       this.isLoad = false;
   
       if (image.rect) {
@@ -316,31 +321,67 @@ const getVectorLenth = (v1, v2) => {
         this.img = this.options.img;
         this.id = this.options.id;
       }
-  
+      console.log("pre()前面：1交錯");
+      //console.log("pre()前面"+this.id+"\n"+this.img);//順序一樣
       this.pre();
+      console.log("pre()後面：2交錯");
+      //console.log("pre()後面"+this.id+"\n"+this.img);
     }
   
     pre() {
       if (typeof this.img !== 'string') {
         this.image = this.img;
         this.isLoad = true;
-        //alert("if step"+stepcount_img+"_"+icon_num);
+        //不會經過這
         this.init()
       } else {
         this.image = new Image();
-  
-        this.image.onload = () => {
-          if (this.isLoad) return;
-          this.isLoad = true;
-          //alert("onload step"+stepcount_img+"_"+icon_num);
-          this.init();
-        };
+        
+          this.image.onload = () => {
+            if (this.isLoad) return;
+            //console.log("pre onload step"+this.id+"\n"+this.image.src);//順序錯了
+            //console.log("pre()內部：3交錯");
+            console.log("for"+this.id+"___"+te+"\n"+this.image.src);
+            
+              if(te<=idtest){
+                if(this.id===te){
+                  console.log("id"+this.id+"\n");
+                  this.isLoad = true;
+                  this.init();
+                  te++;
+                  imgn++;
+                }
+                else{
+                  imgbuffer.push(this);
+                  console.log(imgbuffer[0].id);
+                  imgn++;
+                }
+                console.log("imgn"+imgn+"idtest"+idtest);
+                do{
+                  var ii;
+                  for(ii=0;ii<imgbuffer.length;ii++){
+                    console.log("ii"+ii+"len"+imgbuffer.length+"bufferid"+imgbuffer[ii].id);
+                    if(imgbuffer[ii].id===te){
+                      console.log("bufferid"+imgbuffer[ii].id);
+                      imgbuffer[ii].isLoad = true;
+                      imgbuffer[ii].init();
+                      te++;
+                    }
+                  }
+                }while(imgn===idtest && te<=idtest);
+              }
+
+
+
+            console.log("pre()結束：5交錯");
+          };
+        
         this.image.setAttribute('crossorigin','anonymous');
         this.image.src = this.img;
         
         if (this.image.complete) {
           this.isLoad = true;
-          //alert("complete step"+stepcount_img+"_"+icon_num);
+          //console.log("complete step"+this.id+"\n"+this.image.src);不會經過這
           this.init();
         }
       }
@@ -382,7 +423,8 @@ const getVectorLenth = (v1, v2) => {
         //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row+"555")
       }
       icon_num=icon_num-1;    
-      
+      console.log("init():內部：4交錯");
+      return;
       //this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [this.canvas.width*0.1 / 2, this.canvas.height*0.1 / 2], 0);
     }
   
@@ -401,9 +443,10 @@ const getVectorLenth = (v1, v2) => {
       context.translate(c_x, c_y);
       context.rotate(rect.angle);
       //context.scale(0.1,0.1);
-      console.log("pre image.src"+image.src);
+      //console.log("pre image.src"+image.src);
+      console.log("draw():內部：6 無交錯");
       context.drawImage(image, 0, 0, image.width, image.height, points[0][0] - c_x, points[0][1] - c_y, rect.width, rect.height);
-      console.log("post image.src"+image.src);
+      //console.log("post image.src"+image.src);
       context.restore();
     }
   
@@ -470,6 +513,7 @@ const getVectorLenth = (v1, v2) => {
   
       const add = image => {
         this.loaded += 1;
+        //alert(this.loaded+"\n"+image);
         const lyr = new Photo(image, this, () => {
           setTimeout(() => {
             this.loaded -= 1;
@@ -580,7 +624,7 @@ const getVectorLenth = (v1, v2) => {
   
     addCommand(command) {
       this.layers.push(command);
-  
+      alert("haha")
       if (this.loaded > 0) {
         setTimeout(() => {
           this.draw();
@@ -603,14 +647,16 @@ const getVectorLenth = (v1, v2) => {
             if (this.loaded < 1) {
               this.draw();
             }
-          }, 100);
+          }, 1000);
         });
         this.layers.push(lyr);
         this.addItem(image, lyr.id);
+        //alert("if："+image);順序是對的
       } else {
         const lyr = new Photo(image, this);
         this.layers.push(lyr);
         this.addItem(image, lyr.id);
+        //alert("else："+image.src);不會用到這裡
         this.draw();
       }
     }
@@ -688,26 +734,25 @@ const getVectorLenth = (v1, v2) => {
   
     draw() {
       this.clear();
-     
+        //文字
+        this.context.fillStyle="black";
+        this.context.font="50px serif ";
+        this.context.textAlign = "center";
+        this.context.fillText(titletext,450,45);
+        var i;
+        for(i = 0;i <= stepcount;i++) {
+          this.context.font="20px 'Noto Sans TC'";
+          this.context.textAlign ="left";
+          //alert(i+" "+steptext[i]);
+          this.context.wrapText(steptext[i],0+(i%3)*300,73+Math.floor(i/3)*375,299,20);
+        }
       this.layers.forEach(item => {
-         //文字
-         this.context.fillStyle="black";
-         this.context.font="50px serif ";
-         this.context.textAlign = "center";
-         this.context.fillText(titletext,450,45);
-         //alert(stepcount);
-         var i;
-         for(i = 0;i <= stepcount;i++) {
-           this.context.font="20px 'Noto Sans TC'";
-           this.context.textAlign ="left";
-           //alert(i+" "+steptext[i]);
-           this.context.wrapText(steptext[i],0+(i%3)*300,73+Math.floor(i/3)*375,299,20);
-         }
-
         if (typeof item === 'function') {
           item.apply(null, this.context, this.canvas);
+          //alert("if："+item.img);不會印這邊
         } else {
           item.draw();
+          //alert("else："+item.img);順序是對的
         }
       });
   
@@ -779,7 +824,6 @@ const getVectorLenth = (v1, v2) => {
     width: 900,
     data: dataCa ? JSON.parse(dataCa) : []
   });
-
   function addtext(ti,sc,t){
     titletext = ti;
     stepcount = sc;
