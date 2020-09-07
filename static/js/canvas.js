@@ -321,11 +321,7 @@ const getVectorLenth = (v1, v2) => {
         this.img = this.options.img;
         this.id = this.options.id;
       }
-      console.log("pre()前面：1交錯");
-      //console.log("pre()前面"+this.id+"\n"+this.img);//順序一樣
       this.pre();
-      console.log("pre()後面：2交錯");
-      //console.log("pre()後面"+this.id+"\n"+this.img);
     }
   
     pre() {
@@ -339,13 +335,8 @@ const getVectorLenth = (v1, v2) => {
         
           this.image.onload = () => {
             if (this.isLoad) return;
-            //console.log("pre onload step"+this.id+"\n"+this.image.src);//順序錯了
-            //console.log("pre()內部：3交錯");
-            console.log("for"+this.id+"___"+te+"\n"+this.image.src);
-            
               if(te<=idtest){
                 if(this.id===te){
-                  console.log("id"+this.id+"\n");
                   this.isLoad = true;
                   this.init();
                   te++;
@@ -353,16 +344,12 @@ const getVectorLenth = (v1, v2) => {
                 }
                 else{
                   imgbuffer.push(this);
-                  console.log(imgbuffer[0].id);
                   imgn++;
                 }
-                console.log("imgn"+imgn+"idtest"+idtest);
                 do{
                   var ii;
                   for(ii=0;ii<imgbuffer.length;ii++){
-                    console.log("ii"+ii+"len"+imgbuffer.length+"bufferid"+imgbuffer[ii].id);
                     if(imgbuffer[ii].id===te){
-                      console.log("bufferid"+imgbuffer[ii].id);
                       imgbuffer[ii].isLoad = true;
                       imgbuffer[ii].init();
                       te++;
@@ -371,9 +358,6 @@ const getVectorLenth = (v1, v2) => {
                 }while(imgn===idtest && te<=idtest);
               }
 
-
-
-            console.log("pre()結束：5交錯");
           };
         
         this.image.setAttribute('crossorigin','anonymous');
@@ -381,7 +365,6 @@ const getVectorLenth = (v1, v2) => {
         
         if (this.image.complete) {
           this.isLoad = true;
-          //console.log("complete step"+this.id+"\n"+this.image.src);不會經過這
           this.init();
         }
       }
@@ -412,18 +395,15 @@ const getVectorLenth = (v1, v2) => {
         icon_num=step_array[stepcount_img].length-1;
         column = parseInt(icon_num % 3);
         row = parseInt(icon_num / 3);
-        //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row);
       }
       if(stepcount_img<3){
-        this.rect = new Rect(this.image.width, this.image.height, [x+300*stepcount_img+100*column,y+145+100*row], 0);
+        this.rect = new Rect(this.image.width, this.image.height, [x+310*stepcount_img+100*column+5,y+145+100*row], 0);
       }
       else{
         var stepcount_img_for_draw=parseInt(stepcount_img % 3);
-        this.rect = new Rect(this.image.width, this.image.height, [x+300*stepcount_img_for_draw+100*column,y+520+100*row], 0);
-        //alert("step"+stepcount_img+"-"+icon_num+"column"+column+"row"+row+"555")
+        this.rect = new Rect(this.image.width, this.image.height, [x+310*stepcount_img_for_draw+100*column+5,y+520+100*row], 0);
       }
-      icon_num=icon_num-1;    
-      console.log("init():內部：4交錯");
+      icon_num=icon_num-1;
       return;
       //this.rect = new Rect(this.image.width*0.1, this.image.height*0.1, [this.canvas.width*0.1 / 2, this.canvas.height*0.1 / 2], 0);
     }
@@ -442,11 +422,7 @@ const getVectorLenth = (v1, v2) => {
       context.save();
       context.translate(c_x, c_y);
       context.rotate(rect.angle);
-      //context.scale(0.1,0.1);
-      //console.log("pre image.src"+image.src);
-      console.log("draw():內部：6 無交錯");
       context.drawImage(image, 0, 0, image.width, image.height, points[0][0] - c_x, points[0][1] - c_y, rect.width, rect.height);
-      //console.log("post image.src"+image.src);
       context.restore();
     }
   
@@ -513,7 +489,6 @@ const getVectorLenth = (v1, v2) => {
   
       const add = image => {
         this.loaded += 1;
-        //alert(this.loaded+"\n"+image);
         const lyr = new Photo(image, this, () => {
           setTimeout(() => {
             this.loaded -= 1;
@@ -624,7 +599,6 @@ const getVectorLenth = (v1, v2) => {
   
     addCommand(command) {
       this.layers.push(command);
-      alert("haha")
       if (this.loaded > 0) {
         setTimeout(() => {
           this.draw();
@@ -651,12 +625,10 @@ const getVectorLenth = (v1, v2) => {
         });
         this.layers.push(lyr);
         this.addItem(image, lyr.id);
-        //alert("if："+image);順序是對的
       } else {
         const lyr = new Photo(image, this);
         this.layers.push(lyr);
         this.addItem(image, lyr.id);
-        //alert("else："+image.src);不會用到這裡
         this.draw();
       }
     }
@@ -743,16 +715,13 @@ const getVectorLenth = (v1, v2) => {
         for(i = 0;i <= stepcount;i++) {
           this.context.font="20px 'Noto Sans TC'";
           this.context.textAlign ="left";
-          //alert(i+" "+steptext[i]);
-          this.context.wrapText(steptext[i],0+(i%3)*300,73+Math.floor(i/3)*375,299,20);
+          this.context.wrapText(steptext[i],0+(i%3)*310,73+Math.floor(i/3)*375,299,20);
         }
       this.layers.forEach(item => {
         if (typeof item === 'function') {
           item.apply(null, this.context, this.canvas);
-          //alert("if："+item.img);不會印這邊
         } else {
           item.draw();
-          //alert("else："+item.img);順序是對的
         }
       });
   
@@ -812,7 +781,6 @@ const getVectorLenth = (v1, v2) => {
     link.click();
     // sessionStorage.setItem('test_tst_111',
     //     JSON.stringify(canvas.save()));
-    //alert("?");
   });
 
   const dataCa = sessionStorage.getItem('test_tst_111');
@@ -821,21 +789,16 @@ const getVectorLenth = (v1, v2) => {
     target: 'test',
     list: 'list',
     height: 820,
-    width: 900,
+    width: 920,
     data: dataCa ? JSON.parse(dataCa) : []
   });
   function addtext(ti,sc,t){
     titletext = ti;
     stepcount = sc;
     steptext[sc] = t;
-    //alert("sc"+steptext[sc]);
   }
 
   function addicon(iconcount,iconimg){
-    //alert("pre：iconcount:"+iconcount+" iconimg:"+iconimg);
     canvas.addPhoto(iconimg);
-
-    //icon_num = iconcount;
-    //alert("post：icon_num:"+icon_num+" iconimg:"+iconimg);
   }
   
