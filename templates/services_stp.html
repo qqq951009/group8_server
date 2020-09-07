@@ -15,12 +15,21 @@ Author URL: http://w3layouts.com
     <script>
         addEventListener("load", function() {
             setTimeout(hideURLbar, 0);
-        }, false);
+        }, false)
 
         function hideURLbar() {
             window.scrollTo(0, 1);
         }
 
+        function populateStorage2(name) {
+            sessionStorage.setItem(name, document.getElementById(name).value);
+            setStyles2(name);
+        }
+        function setStyles2(name) {
+            var currentName = sessionStorage.getItem(name);
+            document.getElementById(name).value =  currentName;
+        }
+       
     </script>
     <link
         href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
@@ -53,6 +62,7 @@ Author URL: http://w3layouts.com
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.2/randomColor.min.js"></script>
     <script src="../static/js/jquery.loading.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 </head>
 
 <body>
@@ -472,8 +482,69 @@ Author URL: http://w3layouts.com
 </body>
 
 </html>
+<!-- <script src="../static/js/cookie.js"></script> -->
 
 <script>
+
+    var data;
+    //用json的方式POST
+    $(function() {
+        var currenttxtID = sessionStorage.getItem("txtId");
+        alert("currenttxtID: "+ currenttxtID);
+        if(currenttxtID>2) {
+                for (i=2;i<currenttxtID;i++){
+                    $("#showBlock").append('<div id="div' +i + '">Step '+ i+':<textarea id= "step' +i + '" class="form-control"/></div>');
+                    var currentStep = 'step'+i
+                    var Steps = sessionStorage.getItem(currentStep)
+                    $('#'+currentStep).val(Steps)
+                }
+        
+        }
+
+
+        $('#btn_submit').click(function() {
+            sessionStorage.setItem("txtId",txtId);
+            populateStorage2("step1");
+            populateStorage2("titleName");
+            $('body').loading({
+                onStart: function(loading) {
+                    loading.overlay.slideDown(400);
+                },
+                message: '圖片製作中，請稍等:)'
+            });
+            data = {
+                "num":txtId-1,
+                "step1":$('#step1').val(),
+                "title":$('#titleName').val()
+            }
+            for (i = 2;i <= txtId-1;i++){
+                var newstep = 'step'+i
+                populateStorage2(newstep);
+                data[newstep] = $('#'+newstep).val()
+                console.log(newstep)
+                console.log(data[newstep])     
+            }
+            
+        $.ajax({
+            url: 'post_step',           //'/et_web/post_step'
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=UTF-8',         //$('form').serialize()
+            type: 'POST', 
+            success: function(response) {
+                console.log(data)               
+                console.log(response);
+                window.location.href = "{{ url_for('output_stp')}}"
+            },
+            error: function(error) {
+                console.log(error);
+                }
+            });
+        
+        });
+
+        
+    });
+    
     //set the default value
     var txtId = 2;
 
@@ -505,46 +576,4 @@ Author URL: http://w3layouts.com
             $("#btn_delete").attr("disabled","disabled");
         }
     }
-
-    //用json的方式POST
-    $(function() {
-        
-        $('#btn_submit').click(function() {
-            $('body').loading({
-                onStart: function(loading) {
-                    loading.overlay.slideDown(400);
-                },
-                message: '圖片製作中，請稍等:)'
-            });
-            var data = {
-            "num":txtId-1,
-            "step1":$('#step1').val(),
-            "title":$('#titleName').val()
-        }
-            for (i = 2;i <= txtId-1;i++){
-                var newstep = 'step'+i
-                data[newstep] = $('#'+newstep).val()
-                console.log(newstep)
-                console.log(data[newstep])     
-            }
-            
-        $.ajax({
-            url: 'post_step',           //'/et_web/post_step'
-            data: JSON.stringify(data),
-            contentType: 'application/json;charset=UTF-8',         //$('form').serialize()
-            type: 'POST',
-            success: function(response) {
-                console.log(data)               
-                console.log(response);
-                window.location.href = "{{ url_for('output1')}}"
-            },
-            error: function(error) {
-                console.log(error);
-                }
-            });
-        
-        });
-
-        
-    });
 </script>

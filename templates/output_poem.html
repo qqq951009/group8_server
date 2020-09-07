@@ -1,0 +1,187 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+-->
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>Output Page</title>
+    <style>
+        #list{
+            overflow: hidden;
+        }
+        #list .item{
+            float: left;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            margin-left: 10px;
+            display: -webkit-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        #list .item img{
+            display: inline-block;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="Infinitude Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script>
+        addEventListener("load", function() {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+
+    </script>
+    <!-- //Meta tag Keywords -->
+    <!-- Custom-Files -->
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <!-- Bootstrap-Core-CSS -->
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css" media="all" />
+    <!-- Style-CSS -->
+    <!-- font-awesome-icons -->
+    <link href="../static/css/font-awesome.css" rel="stylesheet">
+    <!-- //font-awesome-icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!--/home -->
+    <div id="home" class="inner-w3pvt-page">
+        <div class="overlay-innerpage">
+            <!--/top-nav -->
+            <div class="top_w3pvt_main container">
+                <!--/header -->
+                <header class="nav_w3pvt text-center">
+                    <!-- nav -->
+                    <nav class="wthree-w3ls">
+                        <div id="logo">
+                            <h1> <a class="navbar-brand px-0 mx-0" href="index_poem">
+                                <img src="../static/images/logo_transparent.png" alt="LOGO圖" class="navbar-brand px-0 mx-0" href="index.html"> 唐詩圖像化
+                            </a>
+                            </h1>
+                        </div>
+
+                        <label for="drop" class="toggle">Menu</label>
+                        <input type="checkbox" id="drop" />
+                        <ul class="menu mr-auto">
+                            <li><a href="index_poem">Home</a></li>
+                            <li><a href="services_poem">Services</a></li>
+                        </ul>
+                    </nav>
+                    <!-- //nav -->
+                </header>
+                <!--//header -->
+
+                <!--/breadcrumb-->
+                <div class="inner-w3pvt-page-info">
+                    <ol class="breadcrumb d-flex">
+                        <li class="breadcrumb-item active">Output</li>
+                    </ol>
+                </div>
+                <!--//breadcrumb-->
+            </div>
+            <!-- //top-nav -->
+        </div>
+    </div>
+    <!-- //home -->
+
+    <!-- Contact -->
+    <section class="about-info py-5 px-lg-5">
+        <div class="content-w3ls-inn px-lg-5">
+            <div class="container py-md-5 py-3">
+                <div class="px-lg-5">
+                    <div class="contact-hny-form mt-lg-5 mt-3">
+                        <div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <h3 class="title-hny mb-lg-5 mb-3">唐詩原文</h3>
+                                        <div id="poem_context">
+                                            <!--動態插入內容-->
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <h3 class="title-hny mb-lg-5 mb-3">情感分析結果</h3>
+                                        <div id="emotion">
+                                            <!--動態插入內容-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <h3 class="title-hny mb-lg-5 mb-3">圖片</h3>
+                                        <div id="image">
+                                            <!--動態插入內容-->                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- //Contact -->
+    <!-- copyright -->
+    <div class="copy_right p-3 d-flex">
+        <div class="container">
+            <div class="row d-flex">
+               <div class="col-lg-9 copy_w3pvt">
+                    <p class="text-lg-left text-center">© 2020 NCU MIS GROUP8. All rights reserved | Design by
+                        <a href="http://w3layouts.com/" target="_blank">W3layouts</a></p>
+                </div>
+                <!-- move top -->
+                <div class="col-lg-3 move-top text-lg-right text-center">
+                    <a href="#home" class="move-top">
+                        <span class="fa fa-angle-double-up mt-3" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- move top -->
+            </div>
+        </div>
+    </div>
+    <!-- //copyright -->
+
+    <script>
+        var step_array;
+        $(function() {
+            
+        $.ajax({
+            url: 'poem',                //'../post_step'
+            //data: JSON.stringify(data),
+            contentType: 'application/json;charset=UTF-8',         //$('form').serialize()
+            type: 'GET',
+            success: function(response) {
+                
+                title = response[0]
+                content=response[1]
+                pic_url=response[2]
+                emotion=response[3]
+
+                $('#poem_context').html("<p>"+content+"</p>");
+                $('#image').html("<img src="+pic_url+"></img>");
+                
+                console.log(response);
+            },
+            error: function(error) {
+                console.log(error);
+                }
+            });
+    
+    });
+    </script>
+</body>
+
+</html>

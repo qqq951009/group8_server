@@ -134,6 +134,7 @@ Author URL: http://w3layouts.com
                     <!-- <h4>圖片在這</h4> -->
                     <canvas height="900" width="820" style="border: 3px solid saddlebrown;" id="test"></canvas>
                     <div id="list"></div>
+                    <button id="btn_edit" class="btn more error mt-4">Edit</button>
                     <button id="save" class="btn more black error mt-4">保存</button>
                     <a id="download"></a>
                 </div>
@@ -249,50 +250,56 @@ Author URL: http://w3layouts.com
     <!-- //copyright -->
     <script src="../static/js/canvas.js"></script>
     <script>
+      
         var step_array;
         $(function() {
             
-        $.ajax({
-            url: 'post_step',                //'../post_step'
-            //data: JSON.stringify(data),
-            contentType: 'application/json;charset=UTF-8',         //$('form').serialize()
-            type: 'GET',
-            success: function(response) {
-                //window.location.href = response.url
-                table_str=""
-                title = response[2]
-                text_list=response[1]
-                icon_list=response[0]
-                
+            $.ajax({
+                url: 'post_step',                //'../post_step'
+                //data: JSON.stringify(data),
+                contentType: 'application/json;charset=UTF-8',         //$('form').serialize()
+                type: 'GET',
+                success: function(response) {
+                    //window.location.href = response.url
+                    table_str=""
+                    title = response[2]
+                    text_list=response[1]
+                    icon_list=response[0]
+                    
 
-                step_array=icon_list
-                for (step=0;step<icon_list.length;step++)
-                {
-                    icon_list[step] = icon_list[step].reverse();
-                    addtext(title,step,text_list[step]);
-                    //console.log(icon_list[step]);
-                    //alert(title+" + "+step+" + "+text_list[step])
-                    //image_str='<tr><th>STEP'+(step+1)+'</th>'
-                    for(image=0;image<icon_list[step].length;image++)
+                    step_array=icon_list
+                    for (step=0;step<icon_list.length;step++)
                     {
-                        //console.log(step+"_"+image+"："+icon_list[step][image]);
-                        addicon(image,icon_list[step][image]);
-                        //image_str+='<td><img src="'+response[step][image]+'"></img></td>';
+                        icon_list[step] = icon_list[step].reverse();
+                        addtext(title,step,text_list[step]);
+                        //console.log(icon_list[step]);
+                        //alert(title+" + "+step+" + "+text_list[step])
+                        //image_str='<tr><th>STEP'+(step+1)+'</th>'
+                        for(image=0;image<icon_list[step].length;image++)
+                        {
+                            //console.log(step+"_"+image+"："+icon_list[step][image]);
+                            addicon(image,icon_list[step][image]);
+                            //image_str+='<td><img src="'+response[step][image]+'"></img></td>';
+                        }
+                        //image_str+='</tr>'
+                        //table_str+=image_str            
                     }
-                    //image_str+='</tr>'
-                    //table_str+=image_str            
-                }
-                
-                //$('#step_table').html(table_str);
-                
-                console.log(response);
-            },
-            error: function(error) {
-                console.log(error);
+                    
+                    //$('#step_table').html(table_str);
+                    
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.log(error);
                 }
             });
-    
-    });
+        
+            $("#btn_edit").click(function (){            
+                window.history.go(-1) //返回上一頁
+                
+            });
+
+        });
     </script>
 </body>
 
