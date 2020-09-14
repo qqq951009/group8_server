@@ -81,14 +81,12 @@ def methodget_poem():
     if request.method == 'POST':
         
         data = json.loads(request.data)
-        title = data['title']
         context = data['context']
         global poem_list
         print(context)
         poem_list=[]
         pic_url2 = poem.poem(context)
         print(pic_url2)
-        poem_list.append(title)
         poem_list.append(context)
         poem_list.append(pic_url2[0])
         poem_list.append(pic_url2[1])

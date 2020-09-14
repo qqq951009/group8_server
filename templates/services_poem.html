@@ -8,7 +8,7 @@ Author URL: http://w3layouts.com
 <html lang="zxx">
 
 <head>
-    <title>唐詩圖像化服務頁面</title>
+    <title>名詩出高圖 服務頁面</title>
     <!-- Meta tag Keywords -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
@@ -64,7 +64,7 @@ Author URL: http://w3layouts.com
                     <!-- nav -->
                     <nav class="wthree-w3ls">
                         <div id="logo">
-                            <h1> <a class="navbar-brand px-0 mx-0" href="index_poem"><img src="../static/images/logo_transparent.png" alt="LOGO圖" class="navbar-brand px-0 mx-0" href="index.html"> 唐詩圖像化
+                            <h1> <a class="navbar-brand px-0 mx-0" href="index_poem"><img src="../static/images/logo_transparent.png" alt="LOGO圖" class="navbar-brand px-0 mx-0" href="index.html"> 名詩出高圖
                                 </a>
                             </h1>
                         </div>
@@ -83,7 +83,7 @@ Author URL: http://w3layouts.com
                 <!--/breadcrumb-->
                 <div class="inner-w3pvt-page-info">
                     <ol class="breadcrumb d-flex">
-                        <li class="breadcrumb-item active">唐詩服務</li>
+                        <li class="breadcrumb-item active">服務頁面</li>
                     </ol>
 
                 </div>
@@ -101,11 +101,6 @@ Author URL: http://w3layouts.com
                 <div class="col-lg-12 banner_bottom_left">
                     <div class="login p-md-5 p-4 mx-auto bg-white mw-100">                   
                         <div>
-                            <h4>標題</h4>
-                            <div class="form-group">
-                                <input type="text" name="title" id="titleName" class="form-control">
-                            </div>
-                    
                             <div class="form-group">
                                 <label for="content">唐詩內文</label>
                                 <textarea id="content"  class="form-control"></textarea>
@@ -128,7 +123,7 @@ Author URL: http://w3layouts.com
         <div class="container">
             <div class="row d-flex">
                 <div class="col-lg-9 copy_w3pvt">
-                    <p class="text-lg-left text-center">© 2020 NCU MIS GROUP8. All rights reserved | Design by
+                    <p class="text-lg-left text-center">© 2020 NCU MIS Group8. All rights reserved | Design by
                         <a href="http://w3layouts.com/" target="_blank">W3layouts</a></p>
                 </div>
                 <!-- move top -->
@@ -148,36 +143,6 @@ Author URL: http://w3layouts.com
 </html>
 
 <script>
-    //cookie
-    var today = new Date();
-    var expiry = new Date(today.getTime() +  24 * 3600 * 1000);//plus 1 days
-
-    function setCookie(name, id) {
-    var element = document.getElementById(id);
-    var elementValue = escape(element.value);
-
-    document.cookie = name +"=" + elementValue +"; path=/; expires=" + expiry.toGMTString();
-    console.log(document.cookie);
-    }
-
-    function storeValues(form) {
-    setCookie("title", form.email - field.value);
-    return true;
-    }
-
-    function displayCookieValue(name) {
-    var value = getCookie(name);
-    var element = document.getElementById("value");
-    element.innerHTML ="Cookie name:"+ name +", value" + value;
-
-    }
-
-    function getCookie(name) {
-    var re = new RegExp(name +"=([^;]+)");
-    var value = re.exec(document.cookie);
-    return (value!= null)? unescape(value[1]) : null;
-    }
-
     //用json的方式POST
     $(function() {        
         $('#btn_submit').click(function() {
@@ -188,9 +153,7 @@ Author URL: http://w3layouts.com
                 message: '圖片製作中，請稍等:)'
             });
             var data = {
-            "context":$('#content').val(),
-            "title":$('#titleName').val()
-
+            "context":$('#content').val()
         }
             
         $.ajax({
