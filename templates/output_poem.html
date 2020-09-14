@@ -53,6 +53,8 @@ Author URL: http://w3layouts.com
     <link href="../static/css/font-awesome.css" rel="stylesheet">
     <!-- //font-awesome-icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    
 </head>
 
 <body>
@@ -67,7 +69,7 @@ Author URL: http://w3layouts.com
                     <nav class="wthree-w3ls">
                         <div id="logo">
                             <h1> <a class="navbar-brand px-0 mx-0" href="index_poem">
-                                <img src="../static/images/logo_transparent.png" alt="LOGO圖" class="navbar-brand px-0 mx-0" href="index.html"> 唐詩圖像化
+                                <img src="../static/images/logo_transparent.png" alt="LOGO圖" class="navbar-brand px-0 mx-0" href="index.html"> 名詩出高圖
                             </a>
                             </h1>
                         </div>
@@ -112,9 +114,13 @@ Author URL: http://w3layouts.com
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <h3 class="title-hny mb-lg-5 mb-3"></h3>                                        
+                                    </div>
+                                    <div class="form-group">
                                         <h3 class="title-hny mb-lg-5 mb-3">情感分析結果</h3>
                                         <div id="emotion">
                                             <!--動態插入內容-->
+                                            <canvas id="oilChart" width="600" height="400"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +145,7 @@ Author URL: http://w3layouts.com
         <div class="container">
             <div class="row d-flex">
                <div class="col-lg-9 copy_w3pvt">
-                    <p class="text-lg-left text-center">© 2020 NCU MIS GROUP8. All rights reserved | Design by
+                    <p class="text-lg-left text-center">© 2020 NCU MIS Group8. All rights reserved | Design by
                         <a href="http://w3layouts.com/" target="_blank">W3layouts</a></p>
                 </div>
                 <!-- move top -->
@@ -165,14 +171,34 @@ Author URL: http://w3layouts.com
             type: 'GET',
             success: function(response) {
                 
-                title = response[0]
-                content=response[1]
-                pic_url=response[2]
-                emotion=response[3]
-
-                $('#poem_context').html("<p>"+content+"</p>");
+                content=response[0]
+                pic_url=response[1]
+                emotion=response[2]
+                $('#poem_context').html("<p id='text_desc_p' style='font-size:30px;'>"+content+"</p>");
+                var break_line=document.getElementById("text_desc_p");
+                var test=break_line.innerHTML;
+                break_line.innerHTML=test.replace(/。/g,"。<br>");
                 $('#image').html("<img src="+pic_url+"></img>");
-                
+                var oilCanvas = document.getElementById("oilChart");
+                    var oilData = {
+                        labels: [
+                            "正面",
+                            "負面"
+                        ],
+                        datasets: [
+                            {
+                                data: [emotion,(1-emotion)],
+                                backgroundColor: [
+                                    "#F7A278",
+                                    "#6DD3CE"
+                                ]
+                            }]
+                    };
+                    var pieChart = new Chart(oilCanvas, {
+                    type: 'pie',
+                    data: oilData
+                    });
+
                 console.log(response);
             },
             error: function(error) {
@@ -182,6 +208,7 @@ Author URL: http://w3layouts.com
     
     });
     </script>
+
 </body>
 
 </html>
